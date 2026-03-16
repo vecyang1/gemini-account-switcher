@@ -104,11 +104,42 @@ list_accounts() {
 
 switch_account() {
   local target_email="$1"
-  local target_dir="$ACCOUNTS_DIR/$target_email"
-  
+  local target_dir=""
+
   if [ -z "$target_email" ]; then
-    error_exit "Please provide an email address to switch to."
+    # Interactive mode
+    echo "Available accounts:"
+    local accounts=($(cd "$ACCOUNTS_DIR" && find . -mindepth 1 -maxdepth 1 -type d ! -name '.git' -exec basename {} \;))
+    
+    if [ ${#accounts[@]} -eq 0 ]; then
+      error_exit "No accounts saved yet."
+    fi
+
+    local current=$(get_current_email)
+    for i in "${!accounts[@]}"; do
+      local acc="${accounts[$i]}"
+      local marker="  "
+      if [ "$acc" = "$current" ]; then
+        marker="* "
+      fi
+      echo "  $((i+1)). $marker$acc"
+    done
+    
+    echo ""
+    read -p "Enter number to switch (or press Enter to cancel): " choice
+    if [ -z "$choice" ]; then
+      echo "Cancelled."
+      exit 0
+    fi
+    
+    if ! [[ "$choice" =~ ^[0-9]+$ ]] || [ "$choice" -lt 1 ] || [ "$choice" -gt "${#accounts[@]}" ]; then
+      error_exit "Invalid selection."
+    fi
+    
+    target_email="${accounts[$((choice-1))]}"
   fi
+
+  target_dir="$ACCOUNTS_DIR/$target_email"
 
   if [ ! -d "$target_dir" ]; then
     error_exit "Account '$target_email' not found in backups. Use 'gemini-switch ls' to view available."
@@ -191,7 +222,15 @@ case "${1:-}" in
   history)
     show_history
     ;;
-  *)
+  help|--help|-h)
     show_help
+    ;;
+  *)
+    # Default to quick switch if no argument is provided
+    if [ -z "${1:-}" ]; then
+      switch_account
+    else
+      show_help
+    fi
     ;;
 esac

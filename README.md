@@ -37,15 +37,16 @@ chmod +x ~/.gemini/scripts/gemini-switch.sh
 ```
 
 ### Step 2: Configure your `~/.zshrc` (or `~/.bashrc`)
-Add the following blocks to your shell configuration file to enable the intelligent Proxy Wrapper and the Account Switcher Alias:
+Add the following blocks to your shell configuration file to enable the intelligent Proxy Wrapper and the Account Switcher Aliases:
 
 ```bash
 # ==========================================
 # Gemini CLI Toolkit
 # ==========================================
 
-# 1. Account Switcher Alias
+# 1. Account Switcher Aliases
 alias gemini-switch="$HOME/.gemini/scripts/gemini-switch.sh"
+alias gs="gemini-switch"
 
 # 2. Smart Proxy Wrapper for Gemini CLI
 # Auto-detects common VPN ports and injects proxy for Node.js
@@ -74,25 +75,30 @@ Restart your terminal or run `source ~/.zshrc`.
 ## Usage Instructions
 
 ### Account Switcher Commands
+You can use `gs` instead of `gemini-switch` for all commands to type faster!
+
 ```bash
+# Interactive Quick Switch (Shows a numbered list of accounts to pick from)
+gs
+
 # List all saved accounts (highlights the active one)
-gemini-switch ls                
+gs ls                
 
 # Clear current authentication to log into a new account
-# (Automatically saves your current session first)
-gemini-switch new               
+# (Automatically saves and backs up your current session first)
+gs new               
 
 # Once you've logged in, force-save your current active session
-gemini-switch save              
+gs save              
 
-# Switch to a previously saved account instantly
-gemini-switch switch name@example.com    
+# Switch to a previously saved account instantly by email
+gs switch name@example.com    
 
 # Quick check on which account you are currently using
-gemini-switch status            
+gs status            
 
 # See the chronological backup history of your account states
-gemini-switch history           
+gs history           
 ```
 
 ## How It Works
