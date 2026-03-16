@@ -1,5 +1,7 @@
 # Gemini CLI Multi-Account Switcher & proxy Wrapper
 
+
+
 A robust, git-backed, zero-data-loss account switcher and smart proxy wrapper specifically designed for the **Google Gemini CLI**. 
 
 Tired of `gemini` throwing `socket hang up` errors because your VPN isn't natively bound to Node.js? Sick of manually copying tokens to switch between different Google Workspace / Personal accounts in the terminal? This toolkit solves both problems seamlessly.
