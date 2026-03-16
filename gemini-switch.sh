@@ -5,6 +5,7 @@ set -e
 ACCOUNTS_DIR="$HOME/.gemini/accounts"
 OAUTH_FILE="$HOME/.gemini/oauth_creds.json"
 GOOGLE_ACCTS_FILE="$HOME/.gemini/google_accounts.json"
+MCP_OAUTH_FILE="$HOME/.gemini/mcp-oauth-tokens-v2.json"
 
 # Setup directories and Git
 setup_environment() {
@@ -65,6 +66,11 @@ save_current_account() {
   
   if [ -f "$GOOGLE_ACCTS_FILE" ]; then
     cp "$GOOGLE_ACCTS_FILE" "$account_dir/google_accounts.json"
+    copied=true
+  fi
+
+  if [ -f "$MCP_OAUTH_FILE" ]; then
+    cp "$MCP_OAUTH_FILE" "$account_dir/mcp-oauth-tokens-v2.json"
     copied=true
   fi
 
@@ -160,6 +166,12 @@ switch_account() {
     warn "Target google_accounts.json missing."
   fi
 
+  if [ -f "$target_dir/mcp-oauth-tokens-v2.json" ]; then
+    cp "$target_dir/mcp-oauth-tokens-v2.json" "$MCP_OAUTH_FILE"
+  else
+    rm -f "$MCP_OAUTH_FILE"
+  fi
+
   info "Successfully switched to account: $target_email."
 }
 
@@ -169,6 +181,7 @@ new_account() {
   echo "Logging out of current account..."
   rm -f "$OAUTH_FILE"
   rm -f "$GOOGLE_ACCTS_FILE"
+  rm -f "$MCP_OAUTH_FILE"
   
   info "Tokens cleared. Please run 'gemini' to authenticate with the new account."
   echo "After authentication, run 'gemini-switch save' to back it up."
