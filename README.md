@@ -1,5 +1,7 @@
 # Gemini CLI Multi-Account Switcher & proxy Wrapper
 
+<img width="520" height="220" alt="image" src="https://github.com/user-attachments/assets/c45fbda1-de41-4bf2-b25b-34cc9659ba2c" />
+
 
 
 A robust, git-backed, zero-data-loss account switcher and smart proxy wrapper specifically designed for the **Google Gemini CLI**. 
